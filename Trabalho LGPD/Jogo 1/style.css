@@ -1,0 +1,183 @@
+@keyframes LigthFlash {
+  0% {
+    background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.8)),
+      url(./escape-room.webp) center no-repeat;
+    background-size: 100%;
+  }
+  50% {
+    background: linear-gradient(rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.9)),
+      url(./escape-room.webp) center no-repeat;
+    background-size: 100%;
+  }
+  100% {
+    background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.8)),
+      url(./escape-room.webp) center no-repeat;
+    background-size: 100%;
+  }
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  font-family: "Nunito", Arial, sans-serif;
+  background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.8)),
+    url(./escape-room.webp) center no-repeat;
+  background-size: 100%;
+  transition: 250ms;
+}
+
+body.animate {
+  animation-name: LigthFlash;
+  animation-duration: 750ms;
+  animation-iteration-count: 2;
+  animation-timing-function: linear;
+  animation-delay: 0s;
+}
+
+/* Tela de Apresentação */
+#intro-screen {
+  text-align: center;
+  padding: 20px;
+  border-radius: 10px;
+  color: #fff;
+  width: 90%;
+}
+
+#intro-screen h1 {
+  font-family: "Oswald", sans-serif;
+  font-size: 50px;
+}
+
+#intro-screen p {
+  font-size: 25px;
+  margin: 30px 0px;
+}
+
+/* Container do Jogo */
+#game-container {
+  text-align: center;
+  max-width: 50%;
+  padding: 20px;
+  border-radius: 10px;
+  color: #fff;
+}
+
+h1 {
+  font-size: 2em;
+  margin-bottom: 20px;
+}
+
+#question-container {
+  margin-top: 20px;
+}
+
+#game-container h1 {
+  font-family: "Oswald", sans-serif;
+  font-size: 50px;
+  margin-bottom: 30px;
+}
+
+#options {
+  margin-top: 10px;
+  display: flex;
+  flex-wrap: wrap;
+  margin: 15px 0px;
+  align-items: center;
+  justify-content: center;
+}
+
+.option-button {
+  padding: 10px;
+  font-size: 18px;
+  margin: 5px;
+  color: #fff;
+  background: transparent;
+  border: 2px solid white;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: 250ms;
+  width: 100%;
+  flex-basis: calc(50% - 10px);
+  font-family: 'Nunito', sans-serif;
+}
+
+.option-button:hover {
+  background-color: #000;
+}
+
+#question {
+  font-size: 20px;
+}
+
+#feedback {
+  margin-top: 15px;
+  font-size: 1em;
+  color: #ff7b7b;
+}
+
+/* CSS */
+.button-50 {
+  appearance: button;
+  background-color: #000;
+  background-image: none;
+  border: 1px solid #000;
+  border-radius: 4px;
+  box-shadow: #fff 4px 4px 0 0, #000 4px 4px 0 1px;
+  box-sizing: border-box;
+  color: #fff;
+  cursor: pointer;
+  display: inline-block;
+  font-size: 18px;
+  font-weight: 400;
+  line-height: 20px;
+  margin: 0 5px 10px 0;
+  overflow: visible;
+  padding: 12px 40px;
+  text-align: center;
+  text-transform: none;
+  touch-action: manipulation;
+  user-select: none;
+  -webkit-user-select: none;
+  vertical-align: middle;
+  white-space: nowrap;
+  margin-top: 25px;
+  font-family: Nunito, Arial, sans-serif;
+  transition: 250ms;
+}
+
+.button-50:focus {
+  text-decoration: none;
+}
+
+.button-50:hover {
+  text-decoration: none;
+}
+
+.button-50:active {
+  box-shadow: rgba(0, 0, 0, 0.125) 0 3px 5px inset;
+  outline: 0;
+}
+
+.button-50:not([disabled]):active {
+  box-shadow: #fff 2px 2px 0 0, #000 2px 2px 0 1px;
+  transform: translate(2px, 2px);
+}
+
+.button-50:not([disabled]):hover {
+  box-shadow: #fff 2px 2px 0 0, #000 2px 2px 0 1px;
+  transform: translate(2px, 2px);
+}
+
+@media (min-width: 768px) {
+  .button-50 {
+    padding: 12px 50px;
+  }
+}
