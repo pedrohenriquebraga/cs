@@ -17,17 +17,18 @@
     />
   </head>
   <body>
+    <audio src="./assets/game-start.mp3" id="game-start"></audio>
     <div id="games-container">
       <h1>Trabalho Computação e Sociedade 2024.2</h1>
       <p>Escolha um dos jogos e se divirta!</p>
       <div id="games">
-        <a href="/cs/trabalhos/jogo_1/jogo_1.html" target="_blank"
-          >Escape Room - LGPD</a
+        <a onclick="initGame()" href="/cs/trabalhos/jogo_1/jogo_1.html" target="_blank"
+          >LGPD</a
         >
-        <a href="/cs/trabalhos/jogo_1/jogo_1.html" target="_blank"
+        <a onclick="initGame()" href="/cs/trabalhos/jogo_1/jogo_1.html" target="_blank"
           >Lei dos Direitos Autorais</a
         >
-        <a href="/cs/trabalhos/jogo_1/jogo_1.html" target="_blank"
+        <a onclick="initGame()" href="/cs/trabalhos/jogo_1/jogo_1.html" target="_blank"
           >Marco Civil da Internet</a
         >
       </div>
@@ -53,5 +54,11 @@
         </div>
       </div>
     </div>
+    <script>
+      document.getElementById("game-start").volume = 0.75
+      function initGame() {
+        document.getElementById("game-start").play();
+      }
+    </script>
   </body>
 </html>
