@@ -2,9 +2,9 @@ const questions = [
   {
     question: "Qual é o objetivo principal da LGPD?",
     options: [
-      "Proteger dados pessoais",
       "Permitir acesso irrestrito a dados",
       "Controlar uso de redes sociais",
+      "Proteger dados pessoais",
       "Regular o comércio eletrônico",
     ],
     answer: "Proteger dados pessoais",
@@ -13,9 +13,9 @@ const questions = [
     question:
       "De acordo com a LGPD, o que são considerados dados pessoais sensíveis?",
     options: [
+      "Dados sobre origem racial, saúde ou orientação sexual",
       "Nome completo e data de nascimento",
       "Informações financeiras",
-      "Dados sobre origem racial, saúde ou orientação sexual",
       "Preferências de compra",
     ],
     answer: "Dados sobre origem racial, saúde ou orientação sexual",
@@ -25,9 +25,9 @@ const questions = [
       "Segundo a LGPD, o consentimento do titular é dispensado para o tratamento de dados pessoais em qual das seguintes situações?",
     options: [
       "Pesquisa de satisfação comercial",
-      "Cumprimento de obrigação legal ou regulatória",
       "Envio de promoções de marketing",
       "Execução de contratos de publicidade",
+      "Cumprimento de obrigação legal ou regulatória",
     ],
     answer: "Cumprimento de obrigação legal ou regulatória",
   },
@@ -41,19 +41,19 @@ const questions = [
     question:
       "De acordo com a LGPD, o titular dos dados pessoais possui qual dos seguintes direitos?",
     options: [
-      "Direito à remuneração pelo uso de seus dados pessoais",
       "Direito de saber quais dados pessoais estão sendo tratados",
-      "Direito de apropriação dos dados coletados por terceiros",
+      "Direito à remuneração pelo uso de seus dados pessoais",
       "Direito de venda de seus dados a empresas",
+      "Direito de apropriação dos dados coletados por terceiros",
     ],
     answer: "Direito de saber quais dados pessoais estão sendo tratados",
   },
   {
     question: "Na LGPD, o que é considerado “Controlador” de dados pessoais?",
     options: [
-      "Pessoa ou empresa que usa dados pessoais apenas para estatísticas",
-      "Pessoa ou empresa que toma decisões sobre o tratamento de dados pessoais",
       "Software que armazena e organiza dados pessoais",
+      "Pessoa ou empresa que toma decisões sobre o tratamento de dados pessoais",
+      "Pessoa ou empresa que usa dados pessoais apenas para estatísticas",
       "Profissional que realiza marketing digital",
     ],
     answer:
@@ -74,10 +74,10 @@ const questions = [
     question:
       "De acordo com a LGPD, em qual situação os dados pessoais podem ser compartilhados sem autorização?",
     options: [
-      "Para execução de estudos acadêmicos, desde que anonimizado",
       "Para envio de e-mails de marketing",
       "Para finalidades comerciais",
       "Para divulgação em redes sociais",
+      "Para execução de estudos acadêmicos, desde que anonimizado",
     ],
     answer: "Para execução de estudos acadêmicos, desde que anonimizado",
   },
@@ -85,12 +85,13 @@ const questions = [
     question:
       "Em caso de vazamento de dados, o controlador deve informar à ANPD em qual situação?",
     options: [
-      "Apenas se houver uma ordem judicial",
-      "Apenas se o vazamento for intencional",
+      "Somente se o titular dos dados reclamar",
       "Quando o incidente possa acarretar risco aos direitos dos titulares",
-      "Somente se o titular dos dados reclamar"
+      "Apenas se o vazamento for intencional",
+      "Apenas se houver uma ordem judicial",
     ],
-    answer: "Quando o incidente possa acarretar risco aos direitos dos titulares",
+    answer:
+      "Quando o incidente possa acarretar risco aos direitos dos titulares",
   },
 ];
 
