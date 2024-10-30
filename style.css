@@ -1,0 +1,102 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+*,
+button,
+input {
+  border: none;
+  outline: none;
+  text-decoration: none;
+  font-family: "Nunito", sans-serif;
+}
+
+body {
+  background: linear-gradient(#00000099, #00000099),
+    url(./assets/game-back.webp) no-repeat center;
+  background-attachment: fixed;
+  background-size: 100%;
+  color: #fff;
+}
+
+#games-container {
+  margin-top: 40px;
+}
+
+#games-container h1 {
+  font-family: "Oswald", sans-serif;
+  text-align: center;
+  margin: 15px 0px;
+}
+
+#games-container p {
+  text-align: center;
+  font-size: 18px;
+  margin-bottom: 30px;
+}
+
+#games {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+#games a {
+  font-family: Nunito, sans-serif;
+  font-size: 18px;
+  color: #fff;
+  background: linear-gradient(90deg, #ff758c 0%, #ff7eb3 100%);
+  padding: 20px;
+  border-radius: 35px;
+  transition: 250ms;
+  width: 250px;
+  margin-bottom: 10px;
+  text-align: center;
+}
+
+#games a:hover {
+  background: linear-gradient(-90deg, #ff758c 0%, #ff7eb3 100%);
+  transform: scale(1.1);
+}
+
+#credits {
+  text-align: center;
+  font-family: "Oswald", sans-serif;
+  margin: 5px 0px;
+}
+
+#credits h2 {
+  font-family: "Oswald", sans-serif;
+  margin-bottom: 30px;
+}
+
+#persons {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#persons .person {
+  margin-right: 25px;
+  transition: 200ms;
+}
+
+#persons .person p {
+  text-align: center;
+  font-size: 18px;
+  font-family: Nunito, sans-serif;
+}
+
+#persons .person img {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+#persons .person:hover {
+  transform: scale(1.1);
+}
