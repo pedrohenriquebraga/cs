@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Escape Room: Marco Civil da Internet</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #2b2b2b;
+            color: #fff;
+            padding: 20px;
+            text-align: center;
+            background-image: url('https://images.unsplash.com/photo-1591836468976-34a7b5d1e8f3?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwzNjUyOXwwfDF8c2VhcmNofDF8fG1pc3RlcnklMjB3b29kfGVufDB8fHx8MTYwMDYwOTI4Mw&ixlib=rb-1.2.1&q=80&w=1080');
+            background-size: cover;
+        }
+        #game, #congratulations {
+            background-color: rgba(40, 40, 40, 0.9);
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.7);
+            max-width: 600px;
+            margin: auto;
+            border: 2px solid #5a5a5a;
+            display: none; /* Escondido por padrão */
+        }
+        #question {
+            margin: 20px 0;
+            font-size: 1.2em;
+            border: 1px solid #5a5a5a;
+            padding: 10px;
+            border-radius: 5px;
+            background-color: #333;
+        }
+        button {
+            padding: 10px 15px;
+            font-size: 1em;
+            border: none;
+            border-radius: 5px;
+            background-color: #d9534f;
+            color: white;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            margin: 5px;
+        }
+        button:hover {
+            background-color: #c9302c;
+        }
+        #result {
+            margin-top: 20px;
+            font-weight: bold;
+            color: #f8d7da;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Escape Room: Marco Civil da Internet</h1>
+    
+    <div id="game">
+        <div id="question"></div>
+        <div id="options"></div>
+        <div id="result"></div>
+    </div>
+
+    <div id="congratulations">
+        <h2>Parabéns!</h2>
+        <p>Você respondeu todas as perguntas corretamente e escapou da sala!</p>
+        <button onclick="restartGame()">Jogar Novamente</button>
+    </div>
+
+    <script>
+        const questions = [
+            { 
+                question: "Uma porta! Responda corretamente para abri-la.\nQual é o principal objetivo do Marco Civil da Internet (Lei nº 12.965/2014)?",
+                options: ['A) Proibir o uso de redes sociais para menores de idade.', 'B) Estabelecer direitos e deveres para o uso da internet no Brasil.', 'C) Regulamentar exclusivamente o comércio eletrônico.', 'D) Controlar o acesso aos sites de notícias.'],
+                answer: 'B'
+            },
+            {
+                question: "Outra porta? Tente fazer a mesma coisa!\nO que significa a 'neutralidade da rede'?",
+                options: ['A) Oferecer serviços de internet sem limites de velocidade.', 'B) Proibir o acesso a redes sociais gratuitas.', 'C) Garantir tratamento igual a todos os dados trafegados, sem discriminação.', 'D) Permitir o bloqueio de conteúdos impróprios.'],
+                answer: 'C'
+            },
+            {
+                question: "O Marco Civil da Internet garante qual dos seguintes direitos aos usuários?",
+                options: ['A) Direito à anonimidade obrigatória.', 'B) Direito à privacidade e à proteção de dados pessoais.', 'C) Direito de modificar conteúdo publicado por terceiros.', 'D) Direito de acessar conteúdos pagos sem custo.'],
+                answer: 'B'
+            },
+            {
+                question: "Segundo o Marco Civil da Internet, quem é responsável por armazenar os registros de conexão dos usuários?",
+                options: ['A) Provedor de conteúdo.', 'B) Autoridade Nacional de Proteção de Dados.', 'C) Provedor de conexão à internet.', 'D) Usuário.'],
+                answer: 'C'
+            },
+            {
+                question: "Qual é o tempo mínimo pelo qual os provedores de conexão devem guardar os registros de conexão dos usuários, conforme o Marco Civil?",
+                options: ['A) 3 meses.', 'B) 1 ano.', 'C) 5 anos.', 'D) Não há obrigação de armazenamento.'],
+                answer: 'B'
+            },
+            {
+                question: "Segundo o Marco Civil, em qual caso os provedores de internet devem fornecer dados de usuários às autoridades?",
+                options: ['A) Sempre que um site for acessado por mais de 100 pessoas.', 'B) Apenas mediante ordem judicial.', 'C) Para qualquer pedido feito pela polícia.', 'D) Somente quando o usuário concorda.'],
+                answer: 'B'
+            },
+            {
+                question: "Qual é a penalidade prevista pelo Marco Civil para o descumprimento das normas de proteção de dados pelos provedores?",
+                options: ['A) Multa e suspensão temporária do serviço.', 'B) Exclusão da empresa do território nacional.', 'C) Prisão dos funcionários da empresa.', 'D) Retenção de todos os dados dos usuários.'],
+                answer: 'A'
+            },
+            {
+                question: "O Marco Civil da Internet estabelece que o conteúdo de terceiros nos provedores de aplicação é de responsabilidade:",
+                options: ['A) Do provedor de conexão.', 'B) Do provedor de aplicação, automaticamente.', 'C) Do usuário que publicou o conteúdo.', 'D) Do governo.'],
+                answer: 'C'
+            },
+            {
+                question: "No Marco Civil, a remoção de conteúdo publicado por um usuário é realizada em qual circunstância?",
+                options: ['A) Quando a publicação recebe reclamações de outros usuários.', 'B) Somente mediante ordem judicial, salvo exceções específicas.', 'C) Sempre que o provedor julgar o conteúdo impróprios.', 'D) Quando o usuário solicitar sem justificativa.'],
+                answer: 'B'
+            },
+            {
+                question: "A lei nº 12.965/2014 reforça a 'liberdade de expressão' na internet de que maneira?",
+                options: ['A) Proibindo a remoção de qualquer conteúdo da internet.', 'B) Garantindo que os usuários possam expressar opiniões sem limites.', 'C) Protegendo o direito de manifestação, salvo casos de crime ou infração legal.', 'D) Determinando que todas as postagens sejam pré-aprovadas pelo provedor.'],
+                answer: 'C'
+            }
+        ];
+
+        let currentQuestionIndex = 0;
+
+        function loadQuestion() {
+            if (currentQuestionIndex < questions.length) {
+                document.getElementById('question').innerText = questions[currentQuestionIndex].question;
+                const optionsDiv = document.getElementById('options');
+                optionsDiv.innerHTML = ''; // Limpa as opções anteriores
+                questions[currentQuestionIndex].options.forEach((option, index) => {
+                    const button = document.createElement('button');
+                    button.innerText = option;
+                    button.onclick = () => submitAnswer(option.charAt(0)); // Envia a letra da resposta
+                    optionsDiv.appendChild(button);
+                });
+                document.getElementById('result').innerText = '';
+            } else {
+                document.getElementById('game').style.display = 'none';
+                document.getElementById('congratulations').style.display = 'block'; // Mostra a tela de congratulações
+            }
+        }
+
+        function submitAnswer(userAnswer) {
+            if (userAnswer === questions[currentQuestionIndex].answer.charAt(0)) {
+                currentQuestionIndex++;
+                loadQuestion();
+            } else {
+                document.getElementById('result').innerText = 'Resposta incorreta. Tente novamente!';
+            }
+        }
+
+        function restartGame() {
+            currentQuestionIndex = 0;
+            document.getElementById('congratulations').style.display = 'none';
+            document.getElementById('game').style.display = 'block'; // Mostra o jogo novamente
+            loadQuestion();
+        }
+
+        // Inicializa o jogo
+        document.getElementById('game').style.display = 'block'; // Mostra o jogo
+        loadQuestion();
+    </script>
+
+</body>
+</html>

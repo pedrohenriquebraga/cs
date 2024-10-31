@@ -1,0 +1,679 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Escape Room - Quarto</title>
+  <style>
+    body {
+      font-family: 'Arial', sans-serif;
+      background-color: #f4f4f4;
+      color: #333;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+      text-align: center;
+    }
+
+    #game {
+      position: relative;
+      width: 400px;
+      height: 300px;
+      border: 2px solid #4CAF50;
+      border-radius: 8px;
+      overflow: hidden;
+      background-color: #e0e0e0;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      transition: opacity 0.3s;
+    }
+
+    #character {
+      width: 30px;
+      height: 30px;
+      background-color: blue;
+      position: absolute;
+      bottom: 10px;
+      left: 10px;
+      transition: background-color 0.3s;
+    }
+
+    .key {
+      width: 15px;
+      height: 15px;
+      background-color: gold;
+      position: absolute;
+      display: none;
+      /* Inicialmente oculta */
+      transition: left 0.1s, bottom 0.1s;
+      /* Suaviza o movimento */
+    }
+
+    #door {
+      width: 30px;
+      height: 60px;
+      background-color: brown;
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      border: 2px solid #4CAF50;
+      border-radius: 4px;
+    }
+
+    #door::after {
+      content: "Saída";
+      color: white;
+      font-weight: bold;
+      position: absolute;
+      top: 20px;
+      left: -10px;
+      font-size: 12px;
+      text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+    }
+
+    #bed {
+      width: 60px;
+      height: 30px;
+      background-color: #8B4513;
+      position: absolute;
+      bottom: 10px;
+      left: 70px;
+      border-radius: 5px;
+    }
+
+    #table {
+      width: 40px;
+      height: 20px;
+      background-color: #654321;
+      position: absolute;
+      bottom: 50px;
+      left: 240px;
+      border-radius: 5px;
+    }
+
+    #window {
+      width: 80px;
+      height: 40px;
+      background-color: #87CEEB;
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      border: 2px solid #000;
+      border-radius: 5px;
+    }
+
+    .question-box {
+      display: none;
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 300px;
+      padding: 20px;
+      background-color: white;
+      border: 2px solid #4CAF50;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+      z-index: 10;
+      text-align: center;
+    }
+
+    input[type="text"] {
+      width: calc(100%);
+      padding: 10px;
+      border: 2px solid #ddd;
+      border-radius: 4px;
+      margin-bottom: 10px;
+      font-size: 16px;
+      box-sizing: border-box;
+    }
+
+    button {
+      background-color: #4CAF50;
+      color: white;
+      padding: 10px 15px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 16px;
+      transition: background-color 0.3s;
+      width: 100%;
+    }
+
+    button:hover {
+      background-color: #45a049;
+    }
+
+    .correct {
+      color: green;
+      font-weight: bold;
+    }
+
+    .incorrect {
+      color: red;
+      font-weight: bold;
+    }
+
+    #message {
+      margin-top: 15px;
+      font-size: 16px;
+    }
+
+    .exit-button {
+      cursor: pointer;
+      font-size: 20px;
+      color: #ff0000;
+      position: absolute;
+      left: -30px;
+      top: 20px;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    #winScreen {
+      display: none;
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 300px;
+      padding: 20px;
+      background-color: white;
+      border: 2px solid #4CAF50;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+      z-index: 15;
+      text-align: center;
+    }
+
+    #winScreen p {
+      font-size: 18px;
+      color: #4CAF50;
+      font-weight: bold;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="game">
+    <div id="character"></div>
+    <div class="key" id="key"></div> <!-- Adiciona a chave -->
+    <div id="door"></div>
+    <div id="bed"></div>
+    <div id="table"></div>
+    <div id="window"></div>
+  </div>
+  <div class="question-box" id="questionBox">
+    <span class="exit-button" id="exitButton">←</span>
+    <p id="description"></p>
+    <input type="text" id="answer" placeholder="Digite sua resposta aqui">
+    <button id="submitButton">Enviar</button>
+    <p id="message"></p>
+  </div>
+  <div class="question-box hidden" id="keyBox">
+    <p id="keyDescription">Você precisa de uma chave para abrir a gaveta.</p>
+    <button id="keyBackButton">Voltar</button>
+  </div>
+  <div class="question-box hidden" id="tableBox">
+    <p id="tableDescription">Você conseguiu uma chave!.</p>
+    <button id="tableBackButton">Voltar</button>
+  </div>
+  <div class="question-box hidden" id="bedBox">
+    <p id="bedDescription">"Ainda tenho que terminar de ler meu exemplar de 'Lei de Direitos Autorais'".</p>
+    <button id="bedBackButton">Voltar</button>
+  </div>
+  <div class="question-box hidden" id="windowBox">
+    <p id="windowDescription">Você precisa de uma chave para abrir a gaveta.</p>
+    <button id="windowBackButton">Voltar</button>
+  </div>
+  <div class="question-box hidden" id="windowWithKeyBox">
+    <p id="windowWithKeyDescription">"Uma prova antiga! Essa prova foi esquisita, nenhuma vez a letra D foi a alternativa correta..."</p>
+    <button id="windowWithKeyBackButton">Voltar</button>
+  </div>
+  <div class="question-box hidden" id="winScreen">
+    <p>Parabéns! Você escapou do quarto!</p>
+  </div>
+  
+  <script>
+  
+  	let currentStage = 0;
+let hasKey = false;
+let keyPosition = { left: 0, bottom: 0 };
+
+const stages = [
+  {
+    question:
+      "1 - Qual é o principal objetivo da Lei de proteção de dados? A) Regular os direitos de propriedade industrial. B) Proteger os direitos autorais e conexos. C) Estabelecer normas para proteção ambiental. D) Controlar o uso de marcas e patentes.",
+    answer: "B",
+    hint: "1 - B"
+  },
+  {
+    question:
+      "2 - A quem pertence o direito autoral sobre uma obra, segundo a Lei nº 9.610/1998? A) Ao empregador do autor da obra. B) Ao autor da obra, independentemente de quem a executa. C) Ao governo brasileiro. D) À instituição onde a obra foi criada.",
+    answer: "B",
+    hint: "2 - B"
+  },
+  {
+    question:
+      "2 - A quem pertence o direito autoral sobre uma obra, segundo a Lei nº 9.610/1998? A) Ao empregador do autor da obra. B) Ao autor da obra, independentemente de quem a executa. C) Ao governo brasileiro. D) À instituição onde a obra foi criada.",
+    answer: "B",
+    hint: "2 - B"
+  },
+  {
+    question:
+      "3 - De acordo com a Lei, qual é o período de proteção dos direitos autorais sobre uma obra após a morte do autor? A) 20 anos B) 50 anos C) 70 anos D) 100 anos",
+    answer: "C",
+    hint: "3 - C"
+  },
+  {
+    question:
+      "3 - De acordo com a Lei, qual é o período de proteção dos direitos autorais sobre uma obra após a morte do autor? A) 20 anos B) 50 anos C) 70 anos D) 100 anos",
+    answer: "C",
+    hint: "3 - C"
+  },
+  {
+    question:
+      "4 - A Lei nº 9.610/1998 permite a reprodução de uma obra protegida para qual finalidade, sem a necessidade de autorização? A) Uso pessoal e privado. B) Reprodução em massa para venda. C) Reprodução com fins comerciais. D) Distribuição em locais públicos.",
+    answer: "A",
+    hint: "4 - A"
+  },
+  {
+    question:
+      "4 - A Lei nº 9.610/1998 permite a reprodução de uma obra protegida para qual finalidade, sem a necessidade de autorização? A) Uso pessoal e privado. B) Reprodução em massa para venda. C) Reprodução com fins comerciais. D) Distribuição em locais públicos.",
+    answer: "A",
+    hint: "4 - A"
+  },
+  {
+    question:
+      "5 - Conforme a Lei nº 9.610/1998, qual das seguintes situações caracteriza uma violação de direitos autorais? A) Citar brevemente um trecho da obra para um trabalho acadêmico. B) Copiar e distribuir integralmente a obra sem autorização. C) Exibir um trecho da obra em uma sala de aula. D) Utilizar uma obra em uma atividade cultural sem fins lucrativos.",
+    answer: "B",
+    hint: "5 - B"
+  },
+  {
+    question:
+      "5 - Conforme a Lei nº 9.610/1998, qual das seguintes situações caracteriza uma violação de direitos autorais? A) Citar brevemente um trecho da obra para um trabalho acadêmico. B) Copiar e distribuir integralmente a obra sem autorização. C) Exibir um trecho da obra em uma sala de aula. D) Utilizar uma obra em uma atividade cultural sem fins lucrativos.",
+    answer: "B",
+    hint: "5 - B"
+  },
+  {
+    question:
+      "6 - De acordo com a Lei, a proteção de direitos autorais se aplica a qual dos itens abaixo? A) Ideias e métodos em si. B) Notícias de jornal em geral. C) Obras literárias, artísticas e científicas. D) Fórmulas matemáticas.",
+    answer: "C",
+    hint: "6 - C"
+  },
+  {
+    question:
+      "6 - De acordo com a Lei, a proteção de direitos autorais se aplica a qual dos itens abaixo? A) Ideias e métodos em si. B) Notícias de jornal em geral. C) Obras literárias, artísticas e científicas. D) Fórmulas matemáticas.",
+    answer: "C",
+    hint: "6 - C"
+  },
+  {
+    question:
+      "7 - Segundo a Lei nº 9.610/1998, qual é a consequência legal para quem infringe direitos autorais? A) Advertência administrativa. B) Multa e apreensão das cópias ilegais, além de possível detenção. C) Publicação obrigatória de retratação em jornais. D) Suspensão temporária dos direitos civis.",
+    answer: "B",
+    hint: "7 - B"
+  },
+  {
+    question:
+      "7 - Segundo a Lei nº 9.610/1998, qual é a consequência legal para quem infringe direitos autorais? A) Advertência administrativa. B) Multa e apreensão das cópias ilegais, além de possível detenção. C) Publicação obrigatória de retratação em jornais. D) Suspensão temporária dos direitos civis.",
+    answer: "B",
+    hint: "7 - B"
+  },
+  {
+    question:
+      "8 - Qual das seguintes situações permite a utilização de uma obra protegida, sem autorização prévia do autor, de acordo com a Lei nº 9.610/1998? A) Reprodução integral da obra em materiais publicitários. B) Utilização de um pequeno trecho para fins educacionais. C) Reprodução para comercialização em pequena escala. D) Tradução e distribuição pública da obra.",
+    answer: "B",
+    hint: "8 - B"
+  },
+  {
+    question:
+      "8 - Qual das seguintes situações permite a utilização de uma obra protegida, sem autorização prévia do autor, de acordo com a Lei nº 9.610/1998? A) Reprodução integral da obra em materiais publicitários. B) Utilização de um pequeno trecho para fins educacionais. C) Reprodução para comercialização em pequena escala. D) Tradução e distribuição pública da obra.",
+    answer: "B",
+    hint: "8 - B"
+  },
+  {
+    question:
+      "Final - Qual foi a única letra que não teve alternativa correta? A) D. B) A. C) C. D) B.",
+    answer: "B",
+    hint: "Final - B"
+  },
+  {
+    question:
+      "Final - Qual foi a única letra que não teve alternativa correta? A) D. B) A. C) C. D) B.",
+    answer: "A",
+    hint: "Final - A"
+  }
+];
+
+const character = document.getElementById("character");
+const key = document.getElementById("key"); // Referência da chave
+const door = document.getElementById("door");
+const windowElement = document.getElementById("window");
+const description = document.getElementById("description");
+const messageElement = document.getElementById("message");
+const answerInput = document.getElementById("answer");
+const submitButton = document.getElementById("submitButton");
+const exitButton = document.getElementById("exitButton");
+const questionBox = document.getElementById("questionBox");
+const keyBox = document.getElementById("keyBox");
+const tableBox = document.getElementById("tableBox");
+const bedBox = document.getElementById("bedBox");
+const windowBox = document.getElementById("windowBox");
+const windowWithKeyBox = document.getElementById("windowWithKeyBox");
+
+const keyBackButton = document.getElementById("keyBackButton");
+const tableBackButton = document.getElementById("tableBackButton");
+const bedBackButton = document.getElementById("bedBackButton");
+const windowBackButton = document.getElementById("windowBackButton");
+const windowWithKeyBackButton = document.getElementById(
+  "windowWithKeyBackButton"
+);
+
+let characterPosition = { left: 10, bottom: 10 };
+let insideRoom = true;
+
+const furniture = [
+  { id: "bed", left: 10, bottom: 249, width: 81, height: 40 },
+  { id: "table", left: 240, bottom: 50, width: 40, height: 20 },
+  { id: "window", left: 70, bottom: 10, width: 60, height: 30 }
+];
+
+function updateCharacterPosition() {
+  character.style.left = `${characterPosition.left}px`;
+  character.style.bottom = `${characterPosition.bottom}px`;
+  if (hasKey) {
+    key.style.left = `${characterPosition.left + 10}px`; // Ajuste a posição da chave
+    key.style.bottom = `${characterPosition.bottom + 30}px`; // Ajuste a posição da chave
+  }
+}
+
+function showKey(position) {
+  key.style.left = `${position.left}px`;
+  key.style.bottom = `${position.bottom}px`;
+  key.style.display = "block"; // Mostra a chave
+}
+
+function checkCollision(newPosition) {
+  return furniture.some((furniture) => {
+    const furnitureRect = {
+      left: furniture.left,
+      bottom: furniture.bottom,
+      width: furniture.width,
+      height: furniture.height
+    };
+
+    const characterRect = {
+      left: newPosition.left,
+      bottom: newPosition.bottom,
+      width: character.clientWidth,
+      height: character.clientHeight
+    };
+
+    return (
+      characterRect.left < furnitureRect.left + furnitureRect.width &&
+      characterRect.left + characterRect.width > furnitureRect.left &&
+      characterRect.bottom < furnitureRect.bottom + furnitureRect.height &&
+      characterRect.bottom + characterRect.height > furnitureRect.bottom
+    );
+  });
+}
+
+function checkWindowCollision(newPosition) {
+  const characterRect = {
+    left: newPosition.left,
+    bottom: newPosition.bottom,
+    width: character.clientWidth,
+    height: character.clientHeight
+  };
+
+  const windowRect = {
+    left: 70,
+    bottom: 10,
+    width: 60,
+    height: 30
+  };
+
+  return (
+    characterRect.left < windowRect.left + windowRect.width &&
+    characterRect.left + characterRect.width > windowRect.left &&
+    characterRect.bottom < windowRect.bottom + windowRect.height &&
+    characterRect.bottom + characterRect.height > windowRect.bottom
+  );
+}
+
+function checkTableCollision(newPosition) {
+  const characterRect = {
+    left: newPosition.left,
+    bottom: newPosition.bottom,
+    width: character.clientWidth,
+    height: character.clientHeight
+  };
+
+  const tableRect = {
+    left: 240,
+    bottom: 50,
+    width: 40,
+    height: 20
+  };
+
+  return (
+    characterRect.left < tableRect.left + tableRect.width &&
+    characterRect.left + characterRect.width > tableRect.left &&
+    characterRect.bottom < tableRect.bottom + tableRect.height &&
+    characterRect.bottom + characterRect.height > tableRect.bottom
+  );
+}
+
+function checkBedCollision(newPosition) {
+  const characterRect = {
+    left: newPosition.left,
+    bottom: newPosition.bottom,
+    width: character.clientWidth,
+    height: character.clientHeight
+  };
+
+  const bedRect = {
+    left: 10,
+    bottom: 249,
+    width: 81,
+    height: 40
+  };
+
+  return (
+    characterRect.left < bedRect.left + bedRect.width &&
+    characterRect.left + characterRect.width > bedRect.left &&
+    characterRect.bottom < bedRect.bottom + bedRect.height &&
+    characterRect.bottom + characterRect.height > bedRect.bottom
+  );
+}
+
+function checkAnswer() {
+  const userAnswer = answerInput.value;
+  answerInput.value = "";
+
+  if (userAnswer.toLowerCase() === stages[currentStage].answer.toLowerCase()) {
+    currentStage++;
+    messageElement.className = "correct";
+    if (currentStage < stages.length - 1) {
+      // Alterado de stages.length para stages.length - 1
+      messageElement.textContent = "Correto! Próxima pergunta.";
+      description.textContent = stages[++currentStage].question; // Incrementa aqui
+    } else {
+      messageElement.textContent = "Parabéns! Você escapou!";
+      questionBox.style.display = "none";
+      hasKey = true;
+      document.getElementById("game").classList.add("hidden");
+          document.getElementById("winScreen").style.display = "block";
+    }
+  } else {
+    messageElement.className = "incorrect";
+    messageElement.textContent = "Incorreto! Tente novamente.";
+  }
+}
+
+function handleKeyPress(event) {
+  const step = 5;
+  const newPosition = { ...characterPosition };
+
+  switch (event.key) {
+    case "w":
+    case "ArrowUp":
+      newPosition.bottom += step;
+      break;
+    case "s":
+    case "ArrowDown":
+      newPosition.bottom -= step;
+      break;
+    case "a":
+    case "ArrowLeft":
+      newPosition.left -= step;
+      break;
+    case "ArrowRight":
+    case "d":
+      newPosition.left += step;
+      break;
+  }
+
+  // Verifica colisão antes de atualizar a posição
+  if (!checkCollision(newPosition) && insideRoom) {
+    characterPosition = newPosition;
+    updateCharacterPosition();
+  }
+
+  // Verifica se o personagem alcançou a porta
+  const interactionArea = { left: 360, bottom: 240, width: 30, height: 60 };
+  if (
+    insideRoom &&
+    characterPosition.left < interactionArea.left + interactionArea.width &&
+    characterPosition.left + character.clientWidth > interactionArea.left &&
+    characterPosition.bottom <
+      interactionArea.bottom + interactionArea.height &&
+    characterPosition.bottom + character.clientHeight > interactionArea.bottom
+  ) {
+    // Muda a interface para perguntas
+    insideRoom = false;
+    document.getElementById("game").classList.add("hidden");
+    questionBox.style.display = "block";
+    description.textContent = stages[currentStage].question;
+    answerInput.style.display = "block";
+    submitButton.style.display = "block";
+    exitButton.style.display = "inline";
+  }
+
+  // Verifica se o personagem encostou na borda da janela
+  if (checkWindowCollision(newPosition)) {
+    insideRoom = false;
+    document.getElementById("game").classList.add("hidden");
+    if (!hasKey) {
+      windowBox.style.display = "block"; // Mostra a interface da janela sem chave
+    } else {
+      windowWithKeyBox.style.display = "block"; // Mostra a interface da janela com chave
+    }
+  }
+
+  // Verifica se o personagem encostou na borda da mesa
+  if (checkTableCollision(newPosition) && !hasKey) {
+    insideRoom = false;
+    document.getElementById("game").classList.add("hidden");
+    tableBox.style.display = "block"; // Mostra a interface da mesa
+    const tablePosition = {
+      left: newPosition.left + character.clientWidth / 2, // Posição onde a chave vai aparecer
+      bottom: newPosition.bottom + character.clientHeight / 2
+    };
+    showKey(tablePosition); // Chama a função para mostrar a chave
+  }
+
+  // Verifica se o personagem encostou na borda da cama
+  if (checkBedCollision(newPosition)) {
+    insideRoom = false;
+    document.getElementById("game").classList.add("hidden");
+    bedBox.style.display = "block"; // Mostra a interface da cama
+  }
+}
+
+// Adiciona o evento para a porta
+door.addEventListener("click", function () {
+  insideRoom = false;
+  document.getElementById("game").classList.add("hidden");
+  questionBox.style.display = "block";
+  description.textContent = stages[currentStage].question;
+  answerInput.style.display = "block";
+  submitButton.style.display = "block";
+  exitButton.style.display = "inline";
+});
+
+submitButton.addEventListener("click", checkAnswer);
+answerInput.addEventListener("keypress", function (event) {
+  if (event.key === "Enter") {
+    checkAnswer();
+  }
+});
+
+// Evento para a seta de sair da pergunta
+exitButton.addEventListener("click", function () {
+  insideRoom = true;
+  questionBox.style.display = "none";
+  document.getElementById("game").classList.remove("hidden");
+  messageElement.textContent = "";
+});
+
+// Evento para voltar da interface da janela
+keyBackButton.addEventListener("click", function () {
+  keyBox.style.display = "none"; // Oculta a caixa de chave
+  document.getElementById("game").classList.remove("hidden"); // Retorna à interface do jogo
+  messageElement.textContent = ""; // Limpa mensagem
+  insideRoom = true; // Habilita movimento novamente
+});
+
+// Evento para voltar da interface da mesa
+tableBackButton.addEventListener("click", function () {
+  tableBox.style.display = "none"; // Oculta a caixa da mesa
+  document.getElementById("game").classList.remove("hidden"); // Retorna à interface do jogo
+  messageElement.textContent = ""; // Limpa mensagem
+  hasKey = true; // O jogador agora tem a chave
+  insideRoom = true; // Habilita movimento novamente
+});
+
+// Evento para voltar da interface da cama
+bedBackButton.addEventListener("click", function () {
+  bedBox.style.display = "none"; // Oculta a caixa da cama
+  document.getElementById("game").classList.remove("hidden"); // Retorna à interface do jogo
+  messageElement.textContent = ""; // Limpa mensagem
+  insideRoom = true; // Habilita movimento novamente
+});
+
+// Evento para voltar da interface da janela sem chave
+windowBackButton.addEventListener("click", function () {
+  windowBox.style.display = "none"; // Oculta a caixa da janela
+  document.getElementById("game").classList.remove("hidden"); // Retorna à interface do jogo
+  messageElement.textContent = ""; // Limpa mensagem
+  insideRoom = true; // Habilita movimento novamente
+});
+
+// Evento para voltar da interface da janela com chave
+windowWithKeyBackButton.addEventListener("click", function () {
+  windowWithKeyBox.style.display = "none"; // Oculta a caixa da janela com chave
+  document.getElementById("game").classList.remove("hidden"); // Retorna à interface do jogo
+  messageElement.textContent = ""; // Limpa mensagem
+  insideRoom = true; // Habilita movimento novamente
+});
+
+// Inicia o jogo
+updateCharacterPosition();
+window.addEventListener("keydown", handleKeyPress);
+
+document.getElementById("door").addEventListener("click", function () {
+  if (hasKey) {
+    // Supondo que `temChave` seja a variável que indica se o jogador tem a chave
+  }
+});
+
+  </script>
+
+</body>
+
+</html>

@@ -1,0 +1,4 @@
+door: left = 360, bottom = 240, width = 30, height = 60
+bed: left = 10, bottom = 249, width = 81, height = 40
+table: left = 240, bottom = 50, width = 40, height = 20
+window: left = 70, bottom = 10, width = 60, height = 30
