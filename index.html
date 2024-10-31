@@ -22,13 +22,13 @@
       <h1>Trabalho Computação e Sociedade 2024.2</h1>
       <p>Escolha um dos jogos e se divirta!</p>
       <div id="games">
-        <a onclick="initGame()" href="/cs/trabalhos/jogo_1/jogo_1.html" target="_blank"
-          >LGPD</a
-        >
-        <a onclick="initGame()" href="/cs/trabalhos/jogo_2/jogo_2.html" target="_blank"
+        <a onclick="initGame()" href="./jogo_2/jogo_2.html" target="_blank"
           >Lei dos Direitos Autorais</a
         >
-        <a onclick="initGame()" href="/cs/trabalhos/jogo_3/jogo_3.html" target="_blank"
+        <a onclick="initGame()" href="./jogo_1/jogo_1.html" target="_blank"
+          >LGPD</a
+        >
+        <a onclick="initGame()" href="./jogo_3/jogo_3.html" target="_blank"
           >Marco Civil da Internet</a
         >
       </div>
@@ -55,7 +55,7 @@
       </div>
     </div>
     <script>
-      document.getElementById("game-start").volume = 0.75
+      document.getElementById("game-start").volume = 0.75;
       function initGame() {
         document.getElementById("game-start").play();
       }

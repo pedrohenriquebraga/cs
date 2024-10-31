@@ -1,0 +1,16 @@
+Os jogos podem ser testados acessando os seguintes links:
+
+Link para os jogos: https://pedrohenriquebraga.github.io/cs
+Link para o repositório no GitHub: https://github.com/pedrohenriquebraga/cs 
+ou pelo acessando o arquivo index.html
+
+Integrantes do Grupo:
+
+Pedro Henrique
+Júlia Mancine
+Rodrigo
+Henrique Siqueira
+
+Caso tenha alguma dúvida ou enfrente algum problema para realizar o teste, 
+entre em contato pelo email:
+pedro_braga2@discente.ufg.br
